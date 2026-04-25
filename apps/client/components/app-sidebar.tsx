@@ -138,12 +138,12 @@ const data = {
   projects: [
     {
       name: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: <HugeiconsIcon icon={DashboardBrowsingIcon} strokeWidth={2} />,
     },
     {
       name: "Transactions",
-      url: "#",
+      url: "/transactions",
       icon: <HugeiconsIcon icon={PieChartIcon} strokeWidth={2} />,
     },
     // {

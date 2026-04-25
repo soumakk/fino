@@ -1,6 +1,6 @@
 "use client";
 
-import { SignupForm } from "@/components/signup-form";
+import { SignupForm } from "@/modules/auth/SignupForm";
 import { LayoutBottomIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 

@@ -4,6 +4,8 @@ import "./globals.css";
 import { Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryProvider } from "@/lib/QueryProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -29,7 +31,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", figtree.variable)}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <TooltipProvider>{children}</TooltipProvider>
+        <QueryProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+          <Toaster position="top-right" closeButton />
+        </QueryProvider>
       </body>
     </html>
   );

@@ -23,6 +23,7 @@ import {
   Share03Icon,
   Delete02Icon,
 } from "@hugeicons/core-free-icons";
+import Link from "next/link";
 
 export function NavProjects({
   projects,
@@ -40,7 +41,7 @@ export function NavProjects({
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<a href={item.url} />}>
+            <SidebarMenuButton render={<Link href={item.url} />}>
               {item.icon}
               <span>{item.name}</span>
             </SidebarMenuButton>

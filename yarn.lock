@@ -571,6 +571,13 @@
   resolved "https://registry.yarnpkg.com/@hono/zod-validator/-/zod-validator-0.7.6.tgz#e51261e50138512f8b09996345c16b66d510355d"
   integrity sha512-Io1B6d011Gj1KknV4rXYz4le5+5EubcWEU/speUjuw9XMMIaP3n78yXLhjd2A3PXaXaUwEAluOiAyLqhBEJgsw==
 
+"@hookform/resolvers@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-5.2.2.tgz#5ac16cd89501ca31671e6e9f0f5c5d762a99aa12"
+  integrity sha512-A/IxlMLShx3KjV/HeTcTfaMxdwy690+L/ZADoeaTltLx+CVuzkeVIPuybK3jrRfw7YZnmdKsVVHAlEPIAEUNlA==
+  dependencies:
+    "@standard-schema/utils" "^0.3.0"
+
 "@hugeicons/core-free-icons@^4.1.1":
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/@hugeicons/core-free-icons/-/core-free-icons-4.1.1.tgz#26b02ecba1bf7ff04e63c7ee05220780132bbcab"
@@ -1195,6 +1202,11 @@
   resolved "https://registry.yarnpkg.com/@standard-schema/spec/-/spec-1.1.0.tgz#a79b55dbaf8604812f52d140b2c9ab41bc150bb8"
   integrity sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==
 
+"@standard-schema/utils@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@standard-schema/utils/-/utils-0.3.0.tgz#3d5e608f16c2390c10528e98e59aef6bf73cae7b"
+  integrity sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==
+
 "@swc/helpers@0.5.15":
   version "0.5.15"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.5.15.tgz#79efab344c5819ecf83a43f3f9f811fc84b516d7"
@@ -1310,6 +1322,18 @@
     "@tailwindcss/oxide" "4.2.4"
     postcss "^8.5.6"
     tailwindcss "4.2.4"
+
+"@tanstack/query-core@5.100.1":
+  version "5.100.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.100.1.tgz#40f49bd5df2f02e80505d74f841c14ff2cbffbe6"
+  integrity sha512-awvQhOO/2TrSCHE5LKKsXcvvj6WSBncwEcMFCB/ez0Qs0b17iyyivoGArNV3HFfXryZwCpnb/olsaBBKrIbtSw==
+
+"@tanstack/react-query@^5.100.1":
+  version "5.100.1"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.100.1.tgz#1de964feced97910397e216dd50015f47a98f5d3"
+  integrity sha512-UgWRLhQKprC37SsO6y1zRabOqDmM2gsdTNPbqTT35yl7kOOhwXU4nyfOiGHXPwoEFJV1IpSk85hjIFjNFWVpzw==
+  dependencies:
+    "@tanstack/query-core" "5.100.1"
 
 "@ts-morph/common@~0.27.0":
   version "0.27.0"
@@ -3854,6 +3878,11 @@ negotiator@^1.0.0:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-1.0.0.tgz#b6c91bb47172d69f93cfd7c357bbb529019b5f6a"
   integrity sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==
 
+next-themes@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/next-themes/-/next-themes-0.4.6.tgz#8d7e92d03b8fea6582892a50a928c9b23502e8b6"
+  integrity sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==
+
 next@16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/next/-/next-16.2.0.tgz#83108005ac8ef9cf99cc178c41d6028941c89446"
@@ -4437,6 +4466,11 @@ react-dom@^19.2.0:
   dependencies:
     scheduler "^0.27.0"
 
+react-hook-form@^7.73.1:
+  version "7.73.1"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.73.1.tgz#ddd1a27cae48f6095529f6e2e0c581daaca5462a"
+  integrity sha512-VAfVYOPcx3piiEVQy95vyFmBwbVUsP/AUIN+mpFG8h11yshDd444nn0VyfaGWSRnhOLVgiDu7HIuBtAIzxn9dA==
+
 react-is@^16.13.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
@@ -4846,6 +4880,11 @@ sisteransi@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.5.tgz#134d681297756437cc05ca01370d3a7a571075ed"
   integrity sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==
+
+sonner@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/sonner/-/sonner-2.0.7.tgz#810c1487a67ec3370126e0f400dfb9edddc3e4f6"
+  integrity sha512-W6ZN4p58k8aDKA4XPcx2hpIQXBRAgyiWVkYhT7CvK6D3iAu7xjvVyhQHg2/iaKJZ1XVJ4r7XuwGL+WGEK37i9w==
 
 source-map-js@^1.0.2, source-map-js@^1.2.1:
   version "1.2.1"

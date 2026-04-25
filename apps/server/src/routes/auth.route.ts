@@ -73,7 +73,7 @@ app.post("/verify-email", async (c) => {
     },
   });
 
-  return c.json({ message: "Email verified successfully" });
+  return c.json({ message: "Email verified successfully", success: true });
 });
 
 app.post("/login", zValidator("json", LoginSchema), async (c) => {
@@ -120,6 +120,75 @@ app.post("/login", zValidator("json", LoginSchema), async (c) => {
       userId: user.id,
     },
   });
+
+  return c.json({
+    accessToken,
+    refreshToken,
+  });
+});
+
+app.post("/refresh", async (c) => {
+  const { token } = await c.req.json();
+
+  if (!token) {
+    throw new HTTPException(401, { message: "No refresh token" });
+  }
+
+  const hashedToken = hashToken(token);
+  const storedToken = await prisma.refreshToken.findFirst({
+    where: {
+      token: hashedToken,
+    },
+    include: { user: true },
+  });
+
+  if (!storedToken) {
+    throw new HTTPException(401, { message: "Invalid refresh token" });
+  }
+
+  if (storedToken.revoked) {
+    await prisma.refreshToken.updateMany({
+      where: { userId: storedToken.userId },
+      data: { revoked: true },
+    });
+    throw new HTTPException(401, { message: "Token reuse detected" });
+  }
+
+  if (storedToken.expiresAt < new Date()) {
+    await prisma.refreshToken.update({
+      where: { id: storedToken.id },
+      data: { revoked: true },
+    });
+    throw new HTTPException(401, { message: "Expired refresh token" });
+  }
+
+  // generate new tokens
+  const accessToken = await sign(
+    {
+      id: storedToken.userId,
+      exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15min
+    },
+    process.env.JWT_SECRET!,
+    "HS256",
+  );
+
+  // refresh token
+  const refreshToken = crypto.randomBytes(32).toString("hex");
+  const hashedRefreshToken = hashToken(refreshToken);
+
+  await prisma.$transaction([
+    prisma.refreshToken.update({
+      where: { id: storedToken.id },
+      data: { revoked: true },
+    }),
+    prisma.refreshToken.create({
+      data: {
+        token: hashedRefreshToken,
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7days
+        userId: storedToken.userId,
+      },
+    }),
+  ]);
 
   return c.json({
     accessToken,

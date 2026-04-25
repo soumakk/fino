@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { LoginForm } from "@/components/login-form"
-import { HugeiconsIcon } from "@hugeicons/react"
-import { LayoutBottomIcon } from "@hugeicons/core-free-icons"
+import { LoginForm } from "@/modules/auth/LoginForm";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { LayoutBottomIcon } from "@hugeicons/core-free-icons";
 
 export default function LoginPage() {
   return (
@@ -10,12 +10,16 @@ export default function LoginPage() {
       <div className="flex w-full max-w-sm flex-col gap-6">
         <a href="#" className="flex items-center gap-2 self-center font-medium">
           <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <HugeiconsIcon icon={LayoutBottomIcon} strokeWidth={2} className="size-4" />
+            <HugeiconsIcon
+              icon={LayoutBottomIcon}
+              strokeWidth={2}
+              className="size-4"
+            />
           </div>
           Acme Inc.
         </a>
         <LoginForm />
       </div>
     </div>
-  )
+  );
 }
