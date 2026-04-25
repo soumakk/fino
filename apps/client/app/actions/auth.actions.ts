@@ -76,3 +76,30 @@ export async function singupAction(formData: FormData) {
     success: true,
   };
 }
+
+export async function logoutAction() {
+  try {
+    const cookieStore = await cookies();
+
+    const refreshToken = cookieStore.get("refresh_token")?.value;
+
+    if (refreshToken) {
+      await fetch(`${process.env.API_URL}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: refreshToken }),
+      });
+    }
+
+    cookieStore.delete("access_token");
+    cookieStore.delete("refresh_token");
+
+    redirect("/login");
+  } catch (err) {
+    if (isRedirectError(err)) throw err;
+
+    redirect("/login");
+  }
+}

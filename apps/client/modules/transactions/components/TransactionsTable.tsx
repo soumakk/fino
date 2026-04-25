@@ -1,31 +1,28 @@
 "use client";
-import { MultiSelectDropdown } from "@/components/widgets/MultiSelectDropdown";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DateRangePicker } from "@/components/widgets/DateRangePicker";
+import { MultiSelectDropdown } from "@/components/widgets/MultiSelectDropdown";
+import { useDebounce } from "@/hooks/useDebounce";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import {
   CancelCircleIcon,
-  Close,
   FilterMailIcon,
-  Search,
   SearchIcon,
-  X,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
+import { DateRange } from "react-day-picker";
 import { useCategories, useTransactions } from "../utils/transaction.query";
 import {
   IFetchTransactionBody,
   ITransactionList,
   TransactionType,
 } from "../utils/transaction.types";
+import AddTransactionForm from "./AddTransactionForm";
 import { DataTable } from "./DataTable";
-import { DateRangePicker } from "@/components/widgets/DateRangePicker";
-import { DateRange } from "react-day-picker";
-import { useDebounce } from "@/hooks/useDebounce";
 
 export default function TransactionTable() {
   const [activeTab, setActiveTab] = useState("all");
@@ -33,8 +30,6 @@ export default function TransactionTable() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 500);
-
-  console.log(dateRange);
 
   const reqBody: IFetchTransactionBody = {
     filters: {
@@ -63,15 +58,9 @@ export default function TransactionTable() {
         accessorKey: "category.name",
         header: "Category",
         cell: ({ row }) => (
-          <Badge
-            className="h-6"
-            style={{
-              color: row.original.category.color,
-              backgroundColor: `${row.original.category.color}35`,
-            }}
-          >
-            {row.original.category.name}
-          </Badge>
+          <div>
+            {row.original.category.icon} {row.original.category.name}
+          </div>
         ),
       },
       {
@@ -117,7 +106,7 @@ export default function TransactionTable() {
           <Button variant="secondary" size="icon-sm">
             <HugeiconsIcon icon={FilterMailIcon} />
           </Button>
-          <Button>Add Transaction</Button>
+          <AddTransactionForm />
         </div>
       </div>
 
@@ -151,7 +140,7 @@ export default function TransactionTable() {
             categories?.map((c) => ({
               label: c.name,
               value: c.id,
-              color: c.color,
+              icon: c.icon,
             })) ?? []
           }
           title="status"

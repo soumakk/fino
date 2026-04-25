@@ -23,7 +23,7 @@ export function MultiSelectDropdown(props: {
   id?: string;
   selected: any[];
   onSelect: (selected: any[]) => void;
-  options: { label: string; value: any; color: string }[];
+  options: { label: string; value: any; icon?: string }[];
   title: string;
   trigger?: React.ReactNode;
   hideSearch?: boolean;
@@ -99,12 +99,7 @@ export function MultiSelectDropdown(props: {
                   className="mr-1"
                 />
 
-                {opt?.color ? (
-                  <div
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: opt?.color }}
-                  ></div>
-                ) : null}
+                {opt?.icon ? opt.icon : null}
 
                 <span>{opt.label}</span>
               </CommandItem>

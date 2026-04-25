@@ -8,6 +8,7 @@ import { HTTPException } from "hono/http-exception";
 import { LoginSchema, SignupSchema } from "../schema/auth.schema.js";
 import { sign } from "hono/jwt";
 import { hashToken } from "@/lib/utils.js";
+import { authMiddlware } from "@/middlewares/auth.middleware.js";
 
 const app = new Hono();
 
@@ -194,6 +195,25 @@ app.post("/refresh", async (c) => {
     accessToken,
     refreshToken,
   });
+});
+
+app.post("/logout", authMiddlware, async (c) => {
+  const { token } = await c.req.json();
+
+  if (token) {
+    const storedToken = await prisma.refreshToken.findFirst({
+      where: { token },
+    });
+
+    if (storedToken) {
+      await prisma.refreshToken.update({
+        where: { id: storedToken.id },
+        data: { revoked: true },
+      });
+    }
+  }
+
+  c.json({ success: true });
 });
 
 export default app;
