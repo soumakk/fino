@@ -4,7 +4,16 @@ interface CustomError {
   data?: any;
 }
 
-type Res<T> = { data?: T; message?: string };
+type Res<T> = {
+  data?: T;
+  message?: string;
+  metadata?: {
+    total: number;
+    pages: number;
+    page: number;
+    limit: number;
+  };
+};
 
 async function http<T>(url: string, config: RequestInit = {}): Promise<Res<T>> {
   const headers = {

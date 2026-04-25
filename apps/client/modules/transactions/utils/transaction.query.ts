@@ -25,7 +25,6 @@ export function useTransactions(body: IFetchTransactionBody) {
         "/api/transactions",
         body,
       ),
-    select: (data) => data.data,
     placeholderData: keepPreviousData,
   });
 }

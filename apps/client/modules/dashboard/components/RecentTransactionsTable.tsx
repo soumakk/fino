@@ -1,0 +1,81 @@
+"use client";
+
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { cn, formatCurrency, formatDate } from "@/lib/utils";
+import { DataTable } from "@/modules/transactions/components/DataTable";
+import { useTransactions } from "@/modules/transactions/utils/transaction.query";
+import {
+  ITransactionList,
+  TransactionType,
+} from "@/modules/transactions/utils/transaction.types";
+import { ColumnDef } from "@tanstack/react-table";
+import { useMemo } from "react";
+
+export default function RecentTransactionsTable() {
+  const { data: transactions, isLoading } = useTransactions({
+    page: 1,
+    limit: 10,
+  });
+
+  const columns: ColumnDef<ITransactionList>[] = useMemo(
+    () => [
+      {
+        accessorKey: "date",
+        header: "Date",
+        cell: ({ row }) => <p>{formatDate(row.original.date)}</p>,
+      },
+      {
+        accessorKey: "category.name",
+        header: "Category",
+        cell: ({ row }) => (
+          <div>
+            {row.original.category.icon} {row.original.category.name}
+          </div>
+        ),
+      },
+      {
+        accessorKey: "description",
+        header: "Description",
+      },
+      {
+        accessorKey: "amount",
+        header: "Amout",
+        cell: ({ row }) => (
+          <p
+            className={cn(
+              row.original.type === TransactionType.EXPENSE
+                ? "text-rose-500"
+                : "text-emerald-500",
+            )}
+          >
+            {row.original.type === TransactionType.EXPENSE ? "-" : "+"}{" "}
+            {formatCurrency(Number(row.original.amount))}
+          </p>
+        ),
+      },
+    ],
+    [],
+  );
+
+  return (
+    <Card className="flex flex-col col-span-2">
+      <CardHeader className="items-center pb-0">
+        <CardTitle>Recent Transactions</CardTitle>
+        <CardDescription>January - June 2024</CardDescription>
+      </CardHeader>
+      <CardContent className="flex-1 pb-0">
+        <DataTable<ITransactionList>
+          columns={columns}
+          data={transactions?.data}
+          isLoading={isLoading}
+        />
+      </CardContent>
+    </Card>
+  );
+}

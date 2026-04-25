@@ -23,6 +23,15 @@ import {
 } from "../utils/transaction.types";
 import AddTransactionForm from "./AddTransactionForm";
 import { DataTable } from "./DataTable";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+
+const pageLimit = 20;
 
 export default function TransactionTable() {
   const [activeTab, setActiveTab] = useState("all");
@@ -30,6 +39,7 @@ export default function TransactionTable() {
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 500);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const reqBody: IFetchTransactionBody = {
     filters: {
@@ -43,6 +53,8 @@ export default function TransactionTable() {
           : undefined,
       search: debouncedSearch,
     },
+    page: currentPage,
+    limit: pageLimit,
   };
   const { data: transactions, isLoading } = useTransactions(reqBody);
   const { data: categories, isLoading: isCategoriesLoading } = useCategories();
@@ -88,7 +100,7 @@ export default function TransactionTable() {
   );
 
   return (
-    <div>
+    <div className="">
       <div className="my-2 flex justify-between items-center ">
         <Tabs
           value={activeTab}
@@ -154,9 +166,32 @@ export default function TransactionTable() {
 
       <DataTable<ITransactionList>
         columns={columns}
-        data={transactions}
+        data={transactions?.data}
         isLoading={isLoading}
       />
+
+      <div className="flex justify-between items-center my-2">
+        <p className="text-sm text-muted-foreground">
+          Total {transactions?.metadata?.total ?? 0} entries
+        </p>
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => setCurrentPage((p) => p - 1)}
+                isActive={currentPage > 1}
+              />
+            </PaginationItem>
+
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage((p) => p + 1)}
+                isActive={currentPage < (transactions?.metadata?.pages ?? 0)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

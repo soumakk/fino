@@ -1,5 +1,9 @@
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { ChartBarInteractive } from "@/modules/dashboard/components/DashboardChart1";
+import { ChartPieDonutText } from "@/modules/dashboard/components/DashboardChart2";
+import DashboardSummary from "@/modules/dashboard/components/DashboardSummary";
+import RecentTransactionsTable from "@/modules/dashboard/components/RecentTransactionsTable";
 
 export default function Page() {
   return (
@@ -8,34 +12,19 @@ export default function Page() {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2">
           <div className="flex items-center gap-2 px-4">
-            Welcome back, Soumak
-            {/*<SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-            />*/}
-            {/*<Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Build Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>*/}
+            <h2 className="font-medium text-xl">Dashboard</h2>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
-            <div className="aspect-video rounded-xl bg-muted/50" />
+        <div className=" flex-1 gap-4 p-4 pt-0 ">
+          <div className="max-w-7xl mx-auto flex flex-col gap-5">
+            <DashboardSummary />
+            <ChartBarInteractive />
+
+            <div className="grid grid-cols-3 gap-5">
+              <ChartPieDonutText />
+              <RecentTransactionsTable />
+            </div>
           </div>
-          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
         </div>
       </SidebarInset>
     </SidebarProvider>

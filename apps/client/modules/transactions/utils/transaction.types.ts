@@ -36,6 +36,8 @@ export type IFetchTransactionBody = {
     path: string;
     direction: string;
   };
+  page: number;
+  limit: number;
 };
 
 export const addTransactionSchema = z.object({

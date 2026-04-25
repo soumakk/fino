@@ -27,7 +27,9 @@ const app = new Hono<{ Variables: AppVariables }>();
 //       date: [start, end],
 //       search: "asdfasdfads",
 //       price: [500, 300]
-//   }
+//   },
+//   page: 1,
+//   limit: 20
 // }
 // Fetch all transactions
 app.post(
@@ -38,36 +40,47 @@ app.post(
     try {
       const body = c.req.valid("json");
       const userId = c.get("userId");
-      const { filters, sort } = body;
+      const { filters, sort, page = 1, limit = 5 } = body;
 
-      const whereQuery = generateFiltersQuery(filters);
+      const whereQuery = { userId, ...generateFiltersQuery(filters) };
       const orderByQuery = generateSortQuery(sort);
-      const data = await prisma.transaction.findMany({
-        where: {
-          userId,
-          ...whereQuery,
-        },
-        select: {
-          id: true,
-          description: true,
-          date: true,
-          amount: true,
-          type: true,
-          userId: true,
-          category: {
-            select: {
-              id: true,
-              name: true,
-              color: true,
-              icon: true,
+      const [transactions, totalCount] = await prisma.$transaction([
+        prisma.transaction.findMany({
+          where: whereQuery,
+          select: {
+            id: true,
+            description: true,
+            date: true,
+            amount: true,
+            type: true,
+            userId: true,
+            category: {
+              select: {
+                id: true,
+                name: true,
+                color: true,
+                icon: true,
+              },
             },
           },
+          orderBy: orderByQuery,
+          take: limit,
+          skip: (page - 1) * limit,
+        }),
+        prisma.transaction.count({
+          where: whereQuery,
+        }),
+      ]);
+      return c.json({
+        data: transactions,
+        metadata: {
+          total: totalCount,
+          pages: Math.floor(totalCount / limit),
+          page: page,
+          limit,
         },
-        orderBy: orderByQuery,
       });
-      return c.json({ data });
     } catch (err) {
-      console.log(err);
       throw new HTTPException(500, { message: "Faled to fetch transactions" });
     }
   },

@@ -12,8 +12,10 @@ export default function Page() {
             <h2 className="font-medium text-xl">All Transaction</h2>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <TransactionTable />
+        <div className="flex-1 p-4 pt-0">
+          <div className="max-w-7xl mx-auto flex flex-col gap-5">
+            <TransactionTable />
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
