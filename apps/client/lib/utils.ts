@@ -1,6 +1,19 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import dayjs from "dayjs";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
+}
+
+export function formatDate(date: string) {
+  return dayjs(date).format("DD MMM, YYYY");
+}
+
+export function formatCurrency(amount: number) {
+  return Intl.NumberFormat("en-IN", {
+    currency: "INR",
+    style: "currency",
+    maximumFractionDigits: 0,
+  }).format(amount);
 }

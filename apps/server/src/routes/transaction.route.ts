@@ -2,28 +2,76 @@ import type { TransactionType } from "@/generated/prisma/enums.js";
 import prisma from "@/lib/prisma.js";
 import { validator } from "@/lib/utils.js";
 import { authMiddlware } from "@/middlewares/auth.middleware.js";
-import { CreateTransactionSchema } from "@/schema/transaction.schema.js";
+import {
+  CreateTransactionSchema,
+  FetchTransactionSchema,
+} from "@/schema/transaction.schema.js";
 import type { AppVariables } from "@/schema/user.schema.js";
+import {
+  generateFiltersQuery,
+  generateSortQuery,
+} from "@/utils/transaction.utils.js";
 import { Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
 
 const app = new Hono<{ Variables: AppVariables }>();
 
-app.get("/", authMiddlware, async (c) => {
-  try {
-    const userId = c.get("userId");
+// {
+//   sort: {
+//     path: "amount",
+//     "direction": "asc",
+//   },
+//   filters: {
+//     type: "INCOME",
+//       category:[ "id"],
+//       date: [start, end],
+//       search: "asdfasdfads",
+//       price: [500, 300]
+//   }
+// }
+// Fetch all transactions
+app.post(
+  "/",
+  authMiddlware,
+  validator("json", FetchTransactionSchema),
+  async (c) => {
+    try {
+      const body = c.req.valid("json");
+      const userId = c.get("userId");
+      const { filters, sort } = body;
 
-    const data = await prisma.transaction.findMany({
-      where: { userId },
-      include: {
-        category: true,
-      },
-    });
-    return c.json({ data });
-  } catch (err) {
-    throw new HTTPException(500, { message: "Faled to fetch transactions" });
-  }
-});
+      const whereQuery = generateFiltersQuery(filters);
+      const orderByQuery = generateSortQuery(sort);
+      const data = await prisma.transaction.findMany({
+        where: {
+          userId,
+          ...whereQuery,
+        },
+        select: {
+          id: true,
+          description: true,
+          date: true,
+          amount: true,
+          type: true,
+          userId: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              color: true,
+              icon: true,
+            },
+          },
+        },
+        orderBy: orderByQuery,
+      });
+      return c.json({ data });
+    } catch (err) {
+      console.log(err);
+      throw new HTTPException(500, { message: "Faled to fetch transactions" });
+    }
+  },
+);
 
 app.get("/:id", authMiddlware, async (c) => {
   try {
@@ -44,7 +92,7 @@ app.get("/:id", authMiddlware, async (c) => {
 });
 
 app.post(
-  "/",
+  "/create",
   authMiddlware,
   validator("json", CreateTransactionSchema),
   async (c) => {

@@ -15,8 +15,8 @@ app.use(logger());
 app.use("/api/*", cors());
 
 app.route("/api/auth", authRoutes);
-app.route("/api/transaction", transactionRoutes);
-app.route("/api/category", categoryRoutes);
+app.route("/api/transactions", transactionRoutes);
+app.route("/api/categories", categoryRoutes);
 
 app.get("/", (c) => {
   return c.text("Hello Hono!");
