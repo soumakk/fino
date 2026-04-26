@@ -17,47 +17,34 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { useExpenseByCategory } from "../dashboard.query";
+import { formatCurrency } from "@/lib/utils";
+import { dashboardFilterAtom } from "../dashboard.utils";
+import { useAtom, useAtomValue } from "jotai";
 
 export const description = "A donut chart with text";
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-];
+const chartConfig = {} satisfies ChartConfig;
 
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig;
+export function ExpenseByCategoryChart() {
+  const dateFilterRange = useAtomValue(dashboardFilterAtom);
 
-export function ChartPieDonutText() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
-  }, []);
+  const { data: chartRes } = useExpenseByCategory({
+    from: dateFilterRange?.from?.toISOString(),
+    to: dateFilterRange?.to?.toISOString(),
+  });
+
+  const chartData = chartRes?.map((c, idx) => ({
+    category: `${c.icon} ${c.name}`,
+    total: Number(c.total),
+    // fill: `${c.color}CC`,
+    fill: `var(--chart-${(idx % 5) + 1})`,
+  }));
+
+  const totalExpense =
+    chartRes?.reduce((acc, item) => acc + Number(item.total), 0) ?? 0;
+
+  console.log(chartData);
 
   return (
     <Card className="flex flex-col">
@@ -73,12 +60,17 @@ export function ChartPieDonutText() {
           <PieChart>
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={
+                <ChartTooltipContent
+                  hideLabel
+                  valueFormatter={(value) => formatCurrency(Number(value))}
+                />
+              }
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="total"
+              nameKey="category"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -95,16 +87,16 @@ export function ChartPieDonutText() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="fill-foreground text-2xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {formatCurrency(totalExpense)}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Expense
                         </tspan>
                       </text>
                     );

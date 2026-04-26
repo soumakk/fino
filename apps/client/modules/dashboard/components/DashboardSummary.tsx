@@ -8,6 +8,8 @@ import {
   MoneySendSquareIcon,
   Wallet01Icon,
 } from "@hugeicons/core-free-icons";
+import { dashboardFilterAtom } from "../dashboard.utils";
+import { useAtomValue } from "jotai";
 
 function formatAmount(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -106,7 +108,12 @@ function SummaryCard({ label, amount, percentageChange, variant }: CardProps) {
 }
 
 export default function DashboardSummary() {
-  const { data: summary, isLoading } = useDashboardSummary();
+  const dateFilterRange = useAtomValue(dashboardFilterAtom);
+
+  const { data: summary, isLoading } = useDashboardSummary({
+    from: dateFilterRange?.from?.toISOString(),
+    to: dateFilterRange?.to?.toISOString(),
+  });
 
   if (isLoading) {
     return (

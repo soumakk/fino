@@ -30,7 +30,10 @@ export type IFetchTransactionBody = {
     category?: string[];
     search?: string;
     amount?: number[];
-    date?: string[];
+    date?: {
+      from?: string;
+      to?: string;
+    };
   };
   sort?: {
     path: string;

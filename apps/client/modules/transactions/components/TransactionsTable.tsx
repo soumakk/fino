@@ -40,16 +40,18 @@ export default function TransactionTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 500);
   const [currentPage, setCurrentPage] = useState(1);
+  console.log(dateRange);
 
   const reqBody: IFetchTransactionBody = {
     filters: {
       type: activeTab === "all" ? undefined : activeTab,
       category: selectedCategories?.length ? selectedCategories : undefined,
       date:
-        dateRange !== undefined && dateRange?.from
-          ? dateRange?.to && dateRange.from !== dateRange.to
-            ? [dateRange.from.toISOString(), dateRange.to.toISOString()]
-            : [dateRange.from.toISOString()]
+        dateRange !== undefined && (dateRange?.from || dateRange?.to)
+          ? {
+              from: dateRange.from?.toISOString(),
+              to: dateRange.to?.toISOString(),
+            }
           : undefined,
       search: debouncedSearch,
     },
@@ -166,7 +168,7 @@ export default function TransactionTable() {
 
       <DataTable<ITransactionList>
         columns={columns}
-        data={transactions?.data}
+        data={transactions?.data ?? []}
         isLoading={isLoading}
       />
 

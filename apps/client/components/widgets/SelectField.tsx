@@ -39,8 +39,8 @@ export function SelectField({
     <Select value={value} onValueChange={onChange} disabled={disabled}>
       <SelectTrigger className={cn("w-full rounded-xl", className)}>
         {selectedOption
-          ? `${selectedOption?.icon} ${selectedOption?.label}`
-          : placeholder}
+          ? `${selectedOption?.icon ?? ""} ${selectedOption?.label}`
+          : (placeholder ?? "")}
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

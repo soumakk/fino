@@ -65,21 +65,14 @@ export function generateFiltersQuery(filters: ITransactionFilters) {
     }
   }
 
-  if (filters?.date?.length) {
-    const start = filters?.date?.[0];
-    const end = filters?.date?.[1];
+  if (!isEmpty(filters?.date) && filters?.date) {
+    const start = filters?.date?.from;
+    const end = filters?.date?.to;
 
-    if (!end) {
-      whereQuery.date = {
-        gte: dayjs(start).startOf("day").toDate(),
-        lte: dayjs(start).endOf("day").toDate(),
-      };
-    } else {
-      whereQuery.date = {
-        gte: dayjs(start).startOf("day").toDate(),
-        lte: dayjs(end).endOf("day").toDate(),
-      };
-    }
+    whereQuery.date = {
+      gte: dayjs(start).startOf("day").toDate(),
+      lte: dayjs(end).endOf("day").toDate(),
+    };
   }
 
   return whereQuery;

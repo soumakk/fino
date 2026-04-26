@@ -16,11 +16,20 @@ import {
 } from "@/modules/transactions/utils/transaction.types";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
+import { dashboardFilterAtom } from "../dashboard.utils";
+import { useAtomValue } from "jotai";
 
 export default function RecentTransactionsTable() {
+  const dateFilterRange = useAtomValue(dashboardFilterAtom);
   const { data: transactions, isLoading } = useTransactions({
     page: 1,
     limit: 10,
+    filters: {
+      date: {
+        from: dateFilterRange?.from?.toISOString(),
+        to: dateFilterRange?.to?.toISOString(),
+      },
+    },
   });
 
   const columns: ColumnDef<ITransactionList>[] = useMemo(
@@ -72,7 +81,7 @@ export default function RecentTransactionsTable() {
       <CardContent className="flex-1 pb-0">
         <DataTable<ITransactionList>
           columns={columns}
-          data={transactions?.data}
+          data={transactions?.data ?? []}
           isLoading={isLoading}
         />
       </CardContent>

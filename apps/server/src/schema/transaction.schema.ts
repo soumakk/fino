@@ -12,7 +12,12 @@ export const TransactionFiltersSchema = z
   .object({
     type: z.enum(["EXPENSE", "INCOME"]).optional(),
     category: z.array(z.string()).optional(),
-    date: z.array(z.string()).optional(),
+    date: z
+      .object({
+        from: z.iso.datetime().optional(),
+        to: z.iso.datetime().optional(),
+      })
+      .optional(),
     search: z.string().optional(),
     amount: z.array(z.number()).optional(),
   })
