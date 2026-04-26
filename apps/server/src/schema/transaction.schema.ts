@@ -42,3 +42,21 @@ export const FetchTransactionSchema = z
   })
   .optional()
   .nullable();
+
+export const TransactionType = {
+  EXPENSE: "EXPENSE",
+  INCOME: "INCOME",
+};
+export const PaymentMethod = {
+  CASH: "CASH",
+  CREDIT_CARD: "CREDIT_CARD",
+  DEBIT_CARD: "DEBIT_CARD",
+  UPI: "UPI",
+  NET_BANKING: "NET_BANKING",
+  WALLET: "WALLET",
+  BANK_TRANSFER: "BANK_TRANSFER",
+  CHEQUE: "CHEQUE",
+  EMI: "EMI",
+  CRYPTO: "CRYPTO",
+  OTHER: "OTHER",
+};

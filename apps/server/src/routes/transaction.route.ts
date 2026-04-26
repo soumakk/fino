@@ -1,7 +1,3 @@
-import type {
-  PaymentMethod,
-  TransactionType,
-} from "@/generated/prisma/enums.js";
 import prisma from "@/lib/prisma.js";
 import { validator } from "@/lib/utils.js";
 import { authMiddlware } from "@/middlewares/auth.middleware.js";
@@ -122,10 +118,10 @@ app.post(
           description: body.description,
           amount: body.amount,
           date: new Date(body.date),
-          type: body.type as TransactionType,
+          type: body.type,
           categoryId: body.categoryId,
           userId: userId,
-          paymentMethod: body.paymentMethod as PaymentMethod,
+          paymentMethod: body.paymentMethod,
         },
       });
 

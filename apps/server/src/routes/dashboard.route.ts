@@ -1,5 +1,4 @@
 import { Prisma } from "@/generated/prisma/client.js";
-import { TransactionType } from "@/generated/prisma/enums.js";
 import type { TransactionWhereInput } from "@/generated/prisma/models.js";
 import prisma from "@/lib/prisma.js";
 import { validator } from "@/lib/utils.js";
