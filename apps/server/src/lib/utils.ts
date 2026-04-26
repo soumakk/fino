@@ -11,14 +11,13 @@ export const validator = (
 ) => {
   return zValidator(target, schema, (result, c) => {
     if (!result.success) {
-      //   console.log();
-      // throw new HTTPException(400, {
-      //   message: "Validation failed",
-      // });
-      return c.json({
+      throw new HTTPException(400, {
         message: "Validation failed",
-        details: result.error.flatten().fieldErrors,
       });
+      // return c.json({
+      //   message: "Validation failed",
+      //   details: result.error.flatten().fieldErrors,
+      // });
     }
   });
 };

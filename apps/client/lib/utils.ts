@@ -18,5 +18,5 @@ export function formatCurrency(amount?: number | string) {
       maximumFractionDigits: 0,
     }).format(Number(amount));
   }
-  return 0;
+  return "0";
 }

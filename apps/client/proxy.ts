@@ -14,6 +14,10 @@ export function proxy(req: NextRequest) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
+  if (!accessToken && refreshToken) {
+    return NextResponse.next();
+  }
+
   if (isAuthPage) {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
