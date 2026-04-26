@@ -14,7 +14,7 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 import { dashboardFilterAtom } from "../dashboard.utils";
 
-const filterOptions = [
+export const filterOptions = [
   {
     id: "this-month",
     name: "This month",

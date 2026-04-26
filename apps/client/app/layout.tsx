@@ -4,7 +4,7 @@ import "./globals.css";
 import { Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryProvider } from "@/lib/QueryProvider";
+import { QueryProvider } from "@/lib/contexts/QueryProvider";
 import { Toaster } from "@/components/ui/sonner";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });

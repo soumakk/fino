@@ -15,17 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
   isLoading?: boolean;
+  className?: string;
 }
 
 export function DataTable<TData>({
   columns,
   data,
   isLoading,
+  className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
     data,
@@ -34,7 +37,7 @@ export function DataTable<TData>({
   });
 
   return (
-    <div className="overflow-hidden rounded-md border">
+    <div className={cn("overflow-hidden rounded-md", className)}>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

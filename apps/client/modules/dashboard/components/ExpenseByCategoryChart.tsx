@@ -49,8 +49,10 @@ export function ExpenseByCategoryChart() {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Pie Chart - Donut with Text</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Spending by category</CardTitle>
+        <CardDescription>
+          Your top expense categories this month
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -71,7 +73,8 @@ export function ExpenseByCategoryChart() {
               data={chartData}
               dataKey="total"
               nameKey="category"
-              innerRadius={60}
+              innerRadius={80}
+              outerRadius={120}
               strokeWidth={5}
             >
               <Label
@@ -107,14 +110,14 @@ export function ExpenseByCategoryChart() {
           </PieChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
+      {/*<CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
           Trending up by 5.2% this month
         </div>
         <div className="leading-none text-muted-foreground">
           Showing total visitors for the last 6 months
         </div>
-      </CardFooter>
+      </CardFooter>*/}
     </Card>
   );
 }

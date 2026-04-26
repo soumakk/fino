@@ -1,7 +1,7 @@
 "use client";
 
 import { SignupForm } from "@/modules/auth/SignupForm";
-import { LayoutBottomIcon } from "@hugeicons/core-free-icons";
+import { MoneyBagIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
 export default function SignupPage() {
@@ -11,12 +11,12 @@ export default function SignupPage() {
         <a href="#" className="flex items-center gap-2 self-center font-medium">
           <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <HugeiconsIcon
-              icon={LayoutBottomIcon}
+              icon={MoneyBagIcon}
               strokeWidth={2}
               className="size-4"
             />
           </div>
-          Acme Inc.
+          Fino
         </a>
         <SignupForm />
       </div>

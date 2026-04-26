@@ -2,6 +2,7 @@
 
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
@@ -18,6 +19,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { dashboardFilterAtom } from "../dashboard.utils";
 import { useAtomValue } from "jotai";
+import { Button } from "@/components/ui/button";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { ArrowRight } from "@hugeicons/core-free-icons";
+import Link from "next/link";
 
 export default function RecentTransactionsTable() {
   const dateFilterRange = useAtomValue(dashboardFilterAtom);
@@ -54,7 +59,7 @@ export default function RecentTransactionsTable() {
       },
       {
         accessorKey: "amount",
-        header: "Amout",
+        header: "Amount",
         cell: ({ row }) => (
           <p
             className={cn(
@@ -76,7 +81,15 @@ export default function RecentTransactionsTable() {
     <Card className="flex flex-col col-span-2">
       <CardHeader className="items-center pb-0">
         <CardTitle>Recent Transactions</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        {/*<CardDescription>January - June 2024</CardDescription>*/}
+        <CardAction>
+          <Link href="/transactions">
+            <Button variant="link">
+              View all
+              <HugeiconsIcon icon={ArrowRight} />
+            </Button>
+          </Link>
+        </CardAction>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <DataTable<ITransactionList>

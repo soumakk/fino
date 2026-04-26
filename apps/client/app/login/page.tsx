@@ -2,7 +2,7 @@
 
 import { LoginForm } from "@/modules/auth/LoginForm";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { LayoutBottomIcon } from "@hugeicons/core-free-icons";
+import { LayoutBottomIcon, MoneyBagIcon } from "@hugeicons/core-free-icons";
 
 export default function LoginPage() {
   return (
@@ -11,12 +11,12 @@ export default function LoginPage() {
         <a href="#" className="flex items-center gap-2 self-center font-medium">
           <div className="flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <HugeiconsIcon
-              icon={LayoutBottomIcon}
+              icon={MoneyBagIcon}
               strokeWidth={2}
               className="size-4"
             />
           </div>
-          Acme Inc.
+          Fino
         </a>
         <LoginForm />
       </div>

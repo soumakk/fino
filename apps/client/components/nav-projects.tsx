@@ -1,29 +1,14 @@
 "use client";
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  MoreHorizontalCircle01Icon,
-  FolderIcon,
-  Share03Icon,
-  Delete02Icon,
-} from "@hugeicons/core-free-icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function NavProjects({
   projects,
@@ -35,13 +20,19 @@ export function NavProjects({
   }[];
 }) {
   const { isMobile } = useSidebar();
+  const pathname = usePathname();
+  console.log(pathname);
+
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       {/*<SidebarGroupLabel>Projects</SidebarGroupLabel>*/}
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton render={<Link href={item.url} />}>
+            <SidebarMenuButton
+              render={<Link href={item.url} />}
+              isActive={item.url.startsWith(pathname)}
+            >
               {item.icon}
               <span>{item.name}</span>
             </SidebarMenuButton>

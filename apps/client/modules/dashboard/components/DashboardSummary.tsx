@@ -4,12 +4,15 @@ import { useDashboardSummary } from "../dashboard.query";
 import {
   ArrowDown02Icon,
   ArrowUp02Icon,
+  Idea01Icon,
   MoneyReceiveSquareIcon,
   MoneySendSquareIcon,
   Wallet01Icon,
 } from "@hugeicons/core-free-icons";
 import { dashboardFilterAtom } from "../dashboard.utils";
 import { useAtomValue } from "jotai";
+import { Alert, AlertTitle } from "@/components/ui/alert";
+import { cn, formatCurrency } from "@/lib/utils";
 
 function formatAmount(amount: number) {
   return new Intl.NumberFormat("en-IN", {
@@ -115,7 +118,7 @@ export default function DashboardSummary() {
     to: dateFilterRange?.to?.toISOString(),
   });
 
-  if (isLoading) {
+  if (isLoading || !summary) {
     return (
       <div className="grid gap-4 md:grid-cols-3">
         {[...Array(3)].map((_, i) => (
@@ -126,25 +129,50 @@ export default function DashboardSummary() {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-3 ">
-      <SummaryCard
-        label="Total balance"
-        amount={summary?.balance ?? 0}
-        percentageChange={0}
-        variant="balance"
-      />
-      <SummaryCard
-        label="Total income"
-        amount={summary?.income ?? 0}
-        percentageChange={0}
-        variant="income"
-      />
-      <SummaryCard
-        label="Total expenses"
-        amount={summary?.expense ?? 0}
-        percentageChange={0}
-        variant="expense"
-      />
-    </div>
+    <>
+      <div className="grid gap-4 md:grid-cols-3 ">
+        <SummaryCard
+          label="Total balance"
+          amount={summary?.balance ?? 0}
+          percentageChange={0}
+          variant="balance"
+        />
+        <SummaryCard
+          label="Total income"
+          amount={summary?.income ?? 0}
+          percentageChange={0}
+          variant="income"
+        />
+        <SummaryCard
+          label="Total expenses"
+          amount={summary?.expense ?? 0}
+          percentageChange={0}
+          variant="expense"
+        />
+      </div>
+
+      <div>
+        <Alert
+          className={cn(
+            summary.balance < 0
+              ? "bg-rose-50 text-rose-500 border-rose-100"
+              : "bg-emerald-50 text-emerald-500 border-emerald-100",
+          )}
+        >
+          <HugeiconsIcon icon={Idea01Icon} />
+          {summary.balance < 0 ? (
+            <AlertTitle>
+              {`You've spent ${formatCurrency(summary.expense)} this month.
+              That's ${formatCurrency(Math.abs(Number(summary.balance)))}
+              more than you earned.`}
+            </AlertTitle>
+          ) : (
+            <AlertTitle>
+              {`You're on track this month. ${formatCurrency(summary.balance)} saved so far.`}
+            </AlertTitle>
+          )}
+        </Alert>
+      </div>
+    </>
   );
 }

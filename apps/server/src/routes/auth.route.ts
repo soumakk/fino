@@ -82,7 +82,13 @@ app.post("/login", zValidator("json", LoginSchema), async (c) => {
 
   const user = await prisma.user.findUnique({
     where: { email },
-    select: { id: true, password: true, isVerified: true },
+    select: {
+      id: true,
+      password: true,
+      isVerified: true,
+      email: true,
+      name: true,
+    },
   });
 
   if (!user) {
@@ -104,6 +110,8 @@ app.post("/login", zValidator("json", LoginSchema), async (c) => {
   const accessToken = await sign(
     {
       id: user.id,
+      email: user.email,
+      name: user.name,
       exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15min
     },
     process.env.JWT_SECRET!,
@@ -167,6 +175,8 @@ app.post("/refresh", async (c) => {
   const accessToken = await sign(
     {
       id: storedToken.userId,
+      email: storedToken.user.email,
+      name: storedToken.user.name,
       exp: Math.floor(Date.now() / 1000) + 15 * 60, // 15min
     },
     process.env.JWT_SECRET!,

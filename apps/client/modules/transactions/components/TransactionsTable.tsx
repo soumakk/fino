@@ -83,7 +83,7 @@ export default function TransactionTable() {
       },
       {
         accessorKey: "amount",
-        header: "Amout",
+        header: "Amount",
         cell: ({ row }) => (
           <p
             className={cn(
@@ -170,6 +170,7 @@ export default function TransactionTable() {
         columns={columns}
         data={transactions?.data ?? []}
         isLoading={isLoading}
+        className="border"
       />
 
       <div className="flex justify-between items-center my-2">
