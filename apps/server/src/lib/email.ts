@@ -1,5 +1,4 @@
 import { Resend } from "resend";
-import "dotenv/config";
 import { HTTPException } from "hono/http-exception";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
