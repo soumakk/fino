@@ -13,6 +13,7 @@ import { DataTable } from "@/modules/transactions/components/DataTable";
 import { useTransactions } from "@/modules/transactions/utils/transaction.query";
 import {
   ITransactionList,
+  PaymentMethodList,
   TransactionType,
 } from "@/modules/transactions/utils/transaction.types";
 import { ColumnDef } from "@tanstack/react-table";
@@ -58,11 +59,24 @@ export default function RecentTransactionsTable() {
         header: "Description",
       },
       {
+        accessorKey: "paymentMethod",
+        header: "Category",
+        cell: ({ row }) => {
+          const method = PaymentMethodList[row.original.paymentMethod];
+          return (
+            <div>
+              {method.emoji} {method.label}
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "amount",
-        header: "Amount",
+        header: () => <p className="text-right">Amount</p>,
         cell: ({ row }) => (
           <p
             className={cn(
+              "text-right",
               row.original.type === TransactionType.EXPENSE
                 ? "text-rose-500"
                 : "text-emerald-500",

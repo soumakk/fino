@@ -10,7 +10,12 @@ import {
 import { DatePicker } from "@/components/widgets/DatePicker";
 import { SelectField } from "@/components/widgets/SelectField";
 import { TransactionTypeToggle } from "@/components/widgets/TransactionTypeToggle";
-import { AddIcon, Loading, Loading03Icon } from "@hugeicons/core-free-icons";
+import {
+  AddIcon,
+  Lab,
+  Loading,
+  Loading03Icon,
+} from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useMemo } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
@@ -18,6 +23,8 @@ import { useAddTransaction, useCategories } from "../utils/transaction.query";
 import {
   addTransactionSchema,
   IAddTransactionBody,
+  PaymentMethod,
+  PaymentMethodList,
   TransactionType,
 } from "../utils/transaction.types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +41,7 @@ export default function AddTransactionForm() {
       type: TransactionType.EXPENSE,
       amount: "",
       date: new Date().toISOString(),
+      paymentMethod: PaymentMethod.CASH,
     },
     resolver: zodResolver(addTransactionSchema),
   });
@@ -50,6 +58,14 @@ export default function AddTransactionForm() {
         })) ?? []
     );
   }, [activeType, categories]);
+
+  const paymentMethodOptions = useMemo(() => {
+    return Object.entries(PaymentMethodList).map(([key, value]) => ({
+      value: key,
+      label: value.label,
+      icon: value.emoji,
+    }));
+  }, []);
 
   function onSubmit(values: IAddTransactionBody) {
     addTransactionFn(values, {
@@ -73,8 +89,7 @@ export default function AddTransactionForm() {
           </Button>
         }
       ></PopoverTrigger>
-      <PopoverContent align="end" className="w-80">
-        <h2 className="font-semibold">New Transaction</h2>
+      <PopoverContent align="end" className="w-96">
         <form className="flex flex-col gap-3" onSubmit={handleSubmit(onSubmit)}>
           <Controller
             control={control}
@@ -116,20 +131,34 @@ export default function AddTransactionForm() {
                 />
               )}
             />
+
+            <Controller
+              name="categoryId"
+              control={control}
+              render={({ field }) => (
+                <SelectField
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={categoriesOptions}
+                  placeholder="Category"
+                />
+              )}
+            />
+
+            <Controller
+              name="paymentMethod"
+              control={control}
+              render={({ field }) => (
+                <SelectField
+                  value={field.value}
+                  onChange={field.onChange}
+                  options={paymentMethodOptions}
+                  placeholder="Payment Method"
+                />
+              )}
+            />
           </div>
 
-          <Controller
-            name="categoryId"
-            control={control}
-            render={({ field }) => (
-              <SelectField
-                value={field.value}
-                onChange={field.onChange}
-                options={categoriesOptions}
-                placeholder="Category"
-              />
-            )}
-          />
           <Button type="submit" disabled={isPending}>
             {isPending ? (
               <>

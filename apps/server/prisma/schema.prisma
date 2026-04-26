@@ -50,12 +50,27 @@ enum TransactionType {
   INCOME
 }
 
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  UPI
+  NET_BANKING
+  WALLET
+  BANK_TRANSFER
+  CHEQUE
+  EMI
+  CRYPTO
+  OTHER
+}
+
 model Transaction {
   id          String   @id @default(cuid())
   description String
   amount      Decimal
   date        DateTime
   type        TransactionType
+  paymentMethod PaymentMethod @default(CASH)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

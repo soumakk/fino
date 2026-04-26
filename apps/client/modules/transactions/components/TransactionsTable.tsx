@@ -19,6 +19,7 @@ import { useCategories, useTransactions } from "../utils/transaction.query";
 import {
   IFetchTransactionBody,
   ITransactionList,
+  PaymentMethodList,
   TransactionType,
 } from "../utils/transaction.types";
 import AddTransactionForm from "./AddTransactionForm";
@@ -82,11 +83,24 @@ export default function TransactionTable() {
         header: "Description",
       },
       {
+        accessorKey: "paymentMethod",
+        header: "Category",
+        cell: ({ row }) => {
+          const method = PaymentMethodList[row.original.paymentMethod];
+          return (
+            <div>
+              {method.emoji} {method.label}
+            </div>
+          );
+        },
+      },
+      {
         accessorKey: "amount",
-        header: "Amount",
+        header: () => <p className="text-right">Amount</p>,
         cell: ({ row }) => (
           <p
             className={cn(
+              "text-right",
               row.original.type === TransactionType.EXPENSE
                 ? "text-rose-500"
                 : "text-emerald-500",

@@ -8,6 +8,7 @@ export interface ITransactionList {
   type: string;
   userId: string;
   category: ICategoryList;
+  paymentMethod: PaymentMethod;
 }
 
 export interface ICategoryList {
@@ -22,6 +23,20 @@ export interface ICategoryList {
 export enum TransactionType {
   EXPENSE = "EXPENSE",
   INCOME = "INCOME",
+}
+
+export enum PaymentMethod {
+  CASH = "CASH",
+  CREDIT_CARD = "CREDIT_CARD",
+  DEBIT_CARD = "DEBIT_CARD",
+  UPI = "UPI",
+  NET_BANKING = "NET_BANKING",
+  WALLET = "WALLET",
+  BANK_TRANSFER = "BANK_TRANSFER",
+  CHEQUE = "CHEQUE",
+  EMI = "EMI",
+  CRYPTO = "CRYPTO",
+  OTHER = "OTHER",
 }
 
 export type IFetchTransactionBody = {
@@ -49,7 +64,24 @@ export const addTransactionSchema = z.object({
   date: z.string().datetime({ message: "Must be a valid ISO date string" }),
   type: z.enum(["EXPENSE", "INCOME"]),
   categoryId: z.string().min(1, "Category is required"),
+  paymentMethod: z.enum(PaymentMethod),
 });
 
-// Pro-tip: You can delete your manual interface and just infer it from Zod
 export type IAddTransactionBody = z.infer<typeof addTransactionSchema>;
+
+export const PaymentMethodList: Record<
+  PaymentMethod,
+  { label: string; emoji: string }
+> = {
+  [PaymentMethod.CASH]: { label: "Cash", emoji: "💵" },
+  [PaymentMethod.CREDIT_CARD]: { label: "Credit card", emoji: "💳" },
+  [PaymentMethod.DEBIT_CARD]: { label: "Debit card", emoji: "🏧" },
+  [PaymentMethod.UPI]: { label: "UPI", emoji: "📱" },
+  [PaymentMethod.NET_BANKING]: { label: "Net banking", emoji: "🏦" },
+  [PaymentMethod.WALLET]: { label: "Wallet", emoji: "👛" },
+  [PaymentMethod.BANK_TRANSFER]: { label: "Bank transfer", emoji: "🔁" },
+  [PaymentMethod.CHEQUE]: { label: "Cheque", emoji: "📝" },
+  [PaymentMethod.EMI]: { label: "EMI", emoji: "📅" },
+  [PaymentMethod.CRYPTO]: { label: "Crypto", emoji: "🪙" },
+  [PaymentMethod.OTHER]: { label: "Other", emoji: "💰" },
+} as const;

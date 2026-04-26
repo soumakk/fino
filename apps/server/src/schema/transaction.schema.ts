@@ -6,6 +6,7 @@ export const CreateTransactionSchema = z.object({
   date: z.string(),
   type: z.string(),
   categoryId: z.string(),
+  paymentMethod: z.string(),
 });
 
 export const TransactionFiltersSchema = z
